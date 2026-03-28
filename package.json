@@ -1,0 +1,13 @@
+{
+  "name": "payment-gateway-template",
+  "version": "1.0.0",
+  "description": "Educational payment gateway template",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["payment", "gateway", "template", "upi"],
+  "author": "",
+  "license": "MIT"
+}

